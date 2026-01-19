@@ -1,0 +1,13 @@
+{
+    "servers": {
+        "sales-mcp": {
+            "type": "stdio",
+            "command": "dotnet",
+            "args": [
+                "run",
+                "--project",
+                "C:\\fontes\\2025\\WhatsappWebhookDotnet\\WhatsappWebhook\\Ciandt.Retail.MCP\\Ciandt.Retail.MCP.csproj",
+            ]
+        }
+    }
+}

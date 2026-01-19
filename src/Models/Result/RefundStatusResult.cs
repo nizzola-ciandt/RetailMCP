@@ -1,0 +1,24 @@
+﻿namespace Ciandt.Retail.MCP.Models.Result;
+
+public class RefundStatusResult
+{
+    public string RefundId { get; set; }
+    public string OrderId { get; set; }
+    public string RefundStatus { get; set; }
+    public decimal RefundAmount { get; set; }
+    public string RefundMethod { get; set; }
+    public DateTime RequestDate { get; set; }
+    public DateTime? ProcessedDate { get; set; }
+    public string PaymentAccount { get; set; } // Last 4 digits or token
+    public int? EstimatedDaysToComplete { get; set; }
+    public List<RefundItem> Items { get; set; } = new List<RefundItem>();
+}
+
+public class RefundItem
+{
+    public string ProductId { get; set; }
+    public string ProductName { get; set; }
+    public int Quantity { get; set; }
+    public decimal RefundAmount { get; set; }
+    public string RefundReason { get; set; }
+}

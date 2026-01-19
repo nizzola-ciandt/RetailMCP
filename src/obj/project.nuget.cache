@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "dgSpecHash": "IWcMaie9tvI=",
+  "success": true,
+  "projectFilePath": "C:\\fontes\\2025\\WhatsappAIChatApp\\src\\Ciandt.Retail.MCP\\Ciandt.Retail.MCP.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\marcio.nizzola\\.nuget\\packages\\microsoft.extensions.ai.abstractions\\10.0.0\\microsoft.extensions.ai.abstractions.10.0.0.nupkg.sha512",
+    "C:\\Users\\marcio.nizzola\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\10.0.0\\microsoft.extensions.configuration.abstractions.10.0.0.nupkg.sha512",
+    "C:\\Users\\marcio.nizzola\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\8.0.0\\microsoft.extensions.dependencyinjection.8.0.0.nupkg.sha512",
+    "C:\\Users\\marcio.nizzola\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\10.0.0\\microsoft.extensions.dependencyinjection.abstractions.10.0.0.nupkg.sha512",
+    "C:\\Users\\marcio.nizzola\\.nuget\\packages\\microsoft.extensions.diagnostics.abstractions\\10.0.0\\microsoft.extensions.diagnostics.abstractions.10.0.0.nupkg.sha512",
+    "C:\\Users\\marcio.nizzola\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\10.0.0\\microsoft.extensions.fileproviders.abstractions.10.0.0.nupkg.sha512",
+    "C:\\Users\\marcio.nizzola\\.nuget\\packages\\microsoft.extensions.hosting.abstractions\\10.0.0\\microsoft.extensions.hosting.abstractions.10.0.0.nupkg.sha512",
+    "C:\\Users\\marcio.nizzola\\.nuget\\packages\\microsoft.extensions.logging\\8.0.0\\microsoft.extensions.logging.8.0.0.nupkg.sha512",
+    "C:\\Users\\marcio.nizzola\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\10.0.0\\microsoft.extensions.logging.abstractions.10.0.0.nupkg.sha512",
+    "C:\\Users\\marcio.nizzola\\.nuget\\packages\\microsoft.extensions.options\\10.0.0\\microsoft.extensions.options.10.0.0.nupkg.sha512",
+    "C:\\Users\\marcio.nizzola\\.nuget\\packages\\microsoft.extensions.primitives\\10.0.0\\microsoft.extensions.primitives.10.0.0.nupkg.sha512",
+    "C:\\Users\\marcio.nizzola\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.22.1\\microsoft.visualstudio.azure.containers.tools.targets.1.22.1.nupkg.sha512",
+    "C:\\Users\\marcio.nizzola\\.nuget\\packages\\modelcontextprotocol\\0.4.1-preview.1\\modelcontextprotocol.0.4.1-preview.1.nupkg.sha512",
+    "C:\\Users\\marcio.nizzola\\.nuget\\packages\\modelcontextprotocol.aspnetcore\\0.4.1-preview.1\\modelcontextprotocol.aspnetcore.0.4.1-preview.1.nupkg.sha512",
+    "C:\\Users\\marcio.nizzola\\.nuget\\packages\\modelcontextprotocol.core\\0.4.1-preview.1\\modelcontextprotocol.core.0.4.1-preview.1.nupkg.sha512",
+    "C:\\Users\\marcio.nizzola\\.nuget\\packages\\serilog\\4.3.0\\serilog.4.3.0.nupkg.sha512",
+    "C:\\Users\\marcio.nizzola\\.nuget\\packages\\serilog.extensions.hosting\\8.0.0\\serilog.extensions.hosting.8.0.0.nupkg.sha512",
+    "C:\\Users\\marcio.nizzola\\.nuget\\packages\\serilog.extensions.logging\\8.0.0\\serilog.extensions.logging.8.0.0.nupkg.sha512",
+    "C:\\Users\\marcio.nizzola\\.nuget\\packages\\serilog.sinks.console\\6.0.0\\serilog.sinks.console.6.0.0.nupkg.sha512",
+    "C:\\Users\\marcio.nizzola\\.nuget\\packages\\system.diagnostics.diagnosticsource\\10.0.0\\system.diagnostics.diagnosticsource.10.0.0.nupkg.sha512",
+    "C:\\Users\\marcio.nizzola\\.nuget\\packages\\system.io.pipelines\\10.0.0\\system.io.pipelines.10.0.0.nupkg.sha512",
+    "C:\\Users\\marcio.nizzola\\.nuget\\packages\\system.net.serversentevents\\10.0.0\\system.net.serversentevents.10.0.0.nupkg.sha512",
+    "C:\\Users\\marcio.nizzola\\.nuget\\packages\\system.text.encodings.web\\10.0.0\\system.text.encodings.web.10.0.0.nupkg.sha512",
+    "C:\\Users\\marcio.nizzola\\.nuget\\packages\\system.text.json\\10.0.0\\system.text.json.10.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
