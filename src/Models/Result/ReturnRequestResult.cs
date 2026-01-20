@@ -11,6 +11,10 @@ public class ReturnRequestResult
     public string ReturnLabel { get; set; } // URL or base64 encoded label
     public DateTime? ReturnDeadline { get; set; }
     public string ReturnInstructions { get; set; }
+    public bool Success { get; set; }
+    public string Message { get; set; } = string.Empty;
+    public decimal RefundAmount { get; set; }
+    public int ExpectedRefundDays { get; set; } = 7;
 }
 
 public class ReturnItem

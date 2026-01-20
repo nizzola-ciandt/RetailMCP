@@ -1,9 +1,8 @@
-﻿using Ciandt.Retail.MCP.Interfaces;
+﻿using Ciandt.Retail.MCP.Data;
 using Ciandt.Retail.MCP.Interfaces.Repositories;
 using Ciandt.Retail.MCP.Repositories;
-using Ciandt.Retail.MCP.Repository;
-using Ciandt.Retail.MCP.Services;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Serilog;
 using Serilog.Events;
@@ -17,21 +16,20 @@ public static class DependencyInjectionExtension
     {
         builder.AddDependencyInjection();
         builder.AddDefaultHealthChecks();
-        builder.Services.AddMemoryCache();
 
         builder.Services.AddMcpServer()
                 .WithHttpTransport(o => o.Stateless = true)
                 .WithToolsFromAssembly();
-        
+
         return builder;
     }
 
     public static void AddDependencyInjection<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
     {
         builder.AddLogger();
+        builder.AddDatabase();
         builder.AddDependencyInjectionWithTag("Service");
-        //posteriormente trocar por : builder.AddDependencyInjectionWithTag("Repository");
-        builder.AddFakeRepositories();
+        builder.AddRepositories();
     }
 
     public static void AddLogger<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
@@ -39,6 +37,7 @@ public static class DependencyInjectionExtension
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Information()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
             .Enrich.FromLogContext()
             .WriteTo.Console()
             .CreateLogger();
@@ -47,15 +46,62 @@ public static class DependencyInjectionExtension
         builder.Logging.AddSerilog(Log.Logger);
     }
 
-    public static void AddFakeRepositories<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
+    public static void AddDatabase<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
     {
-        builder.Services.AddMemoryCache();
-        builder.Services.AddScoped<IProductRepository, ProductFakeRepository>();
-        builder.Services.AddSingleton<ICartRepository, InMemoryCartRepository>();
-        builder.Services.AddSingleton<IPaymentRepository, PaymentFakeRepository>();
-        builder.Services.AddSingleton<IInvoiceRepository, InvoiceFakeRepository>();
-        builder.Services.AddSingleton<ICustomerRepository, CustomerFakeRepository>();
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+        if (string.IsNullOrEmpty(connectionString))
+        {
+            throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+        }
+
+        builder.Services.AddDbContext<RetailDbContext>(options =>
+        {
+            options.UseSqlServer(connectionString, sqlOptions =>
+            {
+                sqlOptions.EnableRetryOnFailure(
+                    maxRetryCount: 5,
+                    maxRetryDelay: TimeSpan.FromSeconds(30),
+                    errorNumbersToAdd: null);
+                sqlOptions.CommandTimeout(60);
+            });
+
+            // Enable sensitive data logging only in development
+            if (builder.Environment.IsDevelopment())
+            {
+                options.EnableSensitiveDataLogging();
+                options.EnableDetailedErrors();
+            }
+        });
+
+        // Add health check for database
+        //builder.Services.AddHealthChecks()
+        //    .AddDbContextCheck<RetailDbContext>("database", tags: new[] { "ready", "db" });
     }
+
+    public static void AddRepositories<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
+    {
+        // Register all repositories with real implementations
+        builder.Services.AddScoped<IProductRepository, ProductRepository>();
+        builder.Services.AddScoped<ICartRepository, CartRepository>();
+        builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+        builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+        builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+        builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+        builder.Services.AddScoped<IPromotionRepository, PromotionRepository>();
+    }
+
+    // Kept for backward compatibility - use AddRepositories instead
+    //[Obsolete("Use AddRepositories instead. This method is kept for backward compatibility.")]
+    //public static void AddFakeRepositories<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
+    //{
+    //    builder.Services.AddMemoryCache();
+    //    builder.Services.AddScoped<IProductRepository, ProductFakeRepository>();
+    //    builder.Services.AddSingleton<ICartRepository, InMemoryCartRepository>();
+    //    builder.Services.AddSingleton<IPaymentRepository, PaymentFakeRepository>();
+    //    builder.Services.AddSingleton<IInvoiceRepository, InvoiceFakeRepository>();
+    //    builder.Services.AddSingleton<ICustomerRepository, CustomerFakeRepository>();
+    //}
 
     private static void AddDependencyInjectionWithTag<TBuilder>(this TBuilder builder, string tag) where TBuilder : IHostApplicationBuilder
     {

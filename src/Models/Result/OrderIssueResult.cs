@@ -11,6 +11,8 @@ public class OrderIssueResult
     public DateTime? ExpectedResolutionDate { get; set; }
     public List<IssueComment> Comments { get; set; } = new List<IssueComment>();
     public string NextSteps { get; set; }
+    public bool Success { get; set; }
+    public string Message { get; set; } = string.Empty;
 }
 
 public class IssueComment
