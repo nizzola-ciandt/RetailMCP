@@ -1,6 +1,47 @@
 using Ciandt.Retail.MCP;
-using Ciandt.Retail.MCP.Tools;
+using Ciandt.Retail.MCP.Data;
 
+var builder = WebApplication.CreateBuilder(args);
+
+// Add service defaults (Database, DI, Logging, MCP Server)
+builder.AddServiceDefaults();
+
+// 1. Register the MCP server in the service container
+builder.Services
+    .AddMcpServer()
+    //.WithStdioServerTransport() // Use Stdio transport for the MCP server
+    .WithHttpTransport(o => o.Stateless = true)           // Use HTTP transport for the MCP server
+    .WithToolsFromAssembly();      // Automatically discoer and register MCP tools from this assembly
+
+
+// Add HTTP Client for external services
+builder.Services.AddHttpClient();
+
+var app = builder.Build();
+
+// Apply migrations automatically in development
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<RetailDbContext>();
+    dbContext.Database.EnsureCreated(); // Ou use dbContext.Database.Migrate() para migrations
+}
+
+app.UseHttpsRedirection();
+
+// Map default endpoints (Health checks and MCP)
+app.MapDefaultEndpoints();
+
+// Map root route
+app.MapGet("/", () => "Welcome to RetailMCP with Entity Framework Core!");
+
+app.MapMcp("/mcp");
+
+app.Run();
+
+Console.WriteLine("RetailMCP Server Stopped");
+
+/*
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddDependencyInjection();
@@ -27,3 +68,4 @@ app.MapMcp("/mcp");
 app.Run();
 
 Console.WriteLine("Finish MCP Server");
+*/

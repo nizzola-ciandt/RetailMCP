@@ -1,4 +1,6 @@
-﻿namespace Ciandt.Retail.MCP.Models.Result;
+﻿using Ciandt.Retail.MCP.Models.Entities;
+
+namespace Ciandt.Retail.MCP.Models.Result;
 
 public class RefundStatusResult
 {
@@ -12,6 +14,10 @@ public class RefundStatusResult
     public string PaymentAccount { get; set; } // Last 4 digits or token
     public int? EstimatedDaysToComplete { get; set; }
     public List<RefundItem> Items { get; set; } = new List<RefundItem>();
+    public OrderStatusEnum Status { get; set;  }
+    public bool Success { get; set; }
+    public string Message { get; set; } = string.Empty;
+    public DateTime ExpectedCompletionDate { get; set; }
 }
 
 public class RefundItem
