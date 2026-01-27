@@ -10,7 +10,7 @@ public class SupportService
         throw new NotImplementedException();
     }
 
-    public async Task<SupportTicket> ReportIssueAsync(string customerId, string orderId, string issueType, string description)
+    public async Task<SupportTicket> ReportIssueAsync(string customerId, int orderId, string issueType, string description)
     {
         // Implementação para registrar problema em sistema automatizado (Jira/ServiceNow/Etc)
         throw new NotImplementedException();

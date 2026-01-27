@@ -27,7 +27,7 @@ public class PromotionEntity
     public string? CategoryId { get; set; }
 
     [MaxLength(50)]
-    public string? ProductId { get; set; }
+    public int? ProductId { get; set; }
 
     public DateTime StartDate { get; set; }
 

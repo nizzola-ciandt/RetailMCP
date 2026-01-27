@@ -6,8 +6,8 @@ namespace Ciandt.Retail.MCP.Interfaces.Repositories;
 public interface IProductRepository
 {
     Task<ICollection<ProductSummary>> GetByCriteria( ProductSearchCriteria criteria );
-    Task<ProductDetailResult> GetProductDetailsAsync(string productId);
-    Task<ProductAvailability> CheckProductAvailabilityAsync(string productId, string location = null);
-    Task<List<ProductReview>> GetProductReviewsAsync(string productId, int limit = 5);
+    Task<ProductDetailResult> GetProductDetailsAsync(int productId);
+    Task<ProductAvailability> CheckProductAvailabilityAsync(int productId, string location = null);
+    Task<List<ProductReview>> GetProductReviewsAsync(int productId, int limit = 5);
     Task<CategorySearchResult> GetCategories();
 }

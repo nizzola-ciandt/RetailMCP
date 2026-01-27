@@ -12,7 +12,7 @@ public class PaymentEntity
 
     [Required]
     [MaxLength(50)]
-    public string OrderId { get; set; } = string.Empty;
+    public int OrderId { get; set; }
 
     [Required]
     [MaxLength(50)]
@@ -41,6 +41,6 @@ public class PaymentEntity
     public DateTime? ProcessedAt { get; set; }
 
     // Navigation properties
-    [ForeignKey(nameof(OrderId))]
+    [ForeignKey("Id")]
     public virtual OrderEntity Order { get; set; } = null!;
 }

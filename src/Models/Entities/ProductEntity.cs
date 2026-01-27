@@ -7,8 +7,8 @@ namespace Ciandt.Retail.MCP.Models.Entities;
 public class ProductEntity
 {
     [Key]
-    [MaxLength(50)]
-    public string ProductId { get; set; } = string.Empty;
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
 
     [Required]
     [MaxLength(200)]

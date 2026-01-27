@@ -24,7 +24,7 @@ public class PaymentTool
 
     [McpServerTool(Name = "payment_request", Title = "Customer wants to pay partial or complete value of your order and insert into payment queue")]
     [Description("Customer wants to pay partial or complete value of your order and insert into payment queue")]
-    public async Task<PaymentProcessingResult> RequestPaymentAsync(string orderId, string paymentMethodId, decimal value, int installments = 1)
+    public async Task<PaymentProcessingResult> RequestPaymentAsync(int orderId, string paymentMethodId, decimal value, int installments = 1)
     {
         try
         {

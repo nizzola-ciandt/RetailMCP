@@ -118,6 +118,48 @@ public class CustomerService : ICustomerService
         }
     }
 
+    public async Task<CustomerProfile?> FindCustomerProfileAsync(CustomerFindRequest customerParams)
+    {
+        if (customerParams == null)
+        {
+            _logger.LogWarning("FindCustomerProfileAsync called with null parameters");
+            return null;
+        }
+
+        // Valida se pelo menos um parâmetro foi fornecido
+        if (string.IsNullOrWhiteSpace(customerParams.Name) &&
+            string.IsNullOrWhiteSpace(customerParams.Email) &&
+            string.IsNullOrWhiteSpace(customerParams.Phone) &&
+            string.IsNullOrWhiteSpace(customerParams.DocumentCPF))
+        {
+            _logger.LogWarning("FindCustomerProfileAsync called with no search parameters");
+            return null;
+        }
+
+        try
+        {
+            _logger.LogInformation("Finding customer profile with provided search criteria");
+
+            var customerProfile = await _customerRepository.FindCustomerProfileAsync(customerParams);
+
+            if (customerProfile == null)
+            {
+                _logger.LogInformation("Customer profile not found with the provided criteria");
+            }
+            else
+            {
+                _logger.LogInformation($"Successfully found customer profile: ID={customerProfile.Id}, Name={customerProfile.Name}");
+            }
+
+            return customerProfile;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error finding customer profile");
+            return null;
+        }
+    }
+
     public async Task<ICollection<Address>> ListAddressAsync(string userId)
     {
         if (string.IsNullOrEmpty(userId))

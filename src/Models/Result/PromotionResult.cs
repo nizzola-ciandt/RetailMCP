@@ -15,7 +15,7 @@ public class PromotionInfo
     public decimal DiscountPercentage { get; set; }
     public decimal? DiscountAmount { get; set; }
     public string? CategoryId { get; set; }
-    public string? ProductId { get; set; }
+    public int? ProductId { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
 }

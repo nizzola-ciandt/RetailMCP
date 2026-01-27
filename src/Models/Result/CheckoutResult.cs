@@ -3,20 +3,31 @@
 public class CheckoutResult
 {
     public bool Success { get; set; }
-    public string Message { get; set; }
-    public Cart Cart { get; set; }
-    public decimal Total { get; set; }
-    public string CheckoutId { get; set; }
+    public string Message { get; set; } = string.Empty;
+    public int? OrderId { get; set; }
+    public decimal Subtotal { get; set; }
+    public decimal ShippingCost { get; set; }
+    public decimal TotalAmount { get; set; }
+    public List<CartItem> Items { get; set; } = new();
+    public DateTime? CreatedAt { get; set; }
 
-    public static CheckoutResult Succeeded(Cart cart, string checkoutId)
+    public static CheckoutResult Succeeded(
+        int orderId,
+        decimal subtotal,
+        decimal shippingCost,
+        decimal totalAmount,
+        List<CartItem> items)
     {
         return new CheckoutResult
         {
             Success = true,
-            Message = "Checkout preparado com sucesso. Realize o pagamento!",
-            Cart = cart,
-            Total = cart.Items.Sum(i => i.Price * i.Quantity),
-            CheckoutId = checkoutId
+            Message = "Pedido criado com sucesso!",
+            OrderId = orderId,
+            Subtotal = subtotal,
+            ShippingCost = shippingCost,
+            TotalAmount = totalAmount,
+            Items = items,
+            CreatedAt = DateTime.UtcNow
         };
     }
 
@@ -25,7 +36,31 @@ public class CheckoutResult
         return new CheckoutResult
         {
             Success = false,
-            Message = message
+            Message = message,
+            OrderId = 0,
+            Subtotal = 0,
+            ShippingCost = 0,
+            TotalAmount = 0,
+            Items = new List<CartItem>(),
+            CreatedAt = null
+        };
+    }
+
+    // Mantém compatibilidade com o método antigo
+    [Obsolete("Use Succeeded(orderId, subtotal, shippingCost, totalAmount, items) instead")]
+    public static CheckoutResult Succeeded(Cart cart, int checkoutId)
+    {
+        var subtotal = cart.Items.Sum(i => i.Price * i.Quantity);
+        return new CheckoutResult
+        {
+            Success = true,
+            Message = "Checkout preparado com sucesso",
+            OrderId = checkoutId,
+            Subtotal = subtotal,
+            ShippingCost = 0,
+            TotalAmount = subtotal,
+            Items = cart.Items.ToList(),
+            CreatedAt = DateTime.UtcNow
         };
     }
 }

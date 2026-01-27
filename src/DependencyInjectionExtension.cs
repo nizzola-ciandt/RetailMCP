@@ -1,4 +1,5 @@
 ﻿using Ciandt.Retail.MCP.Data;
+using Ciandt.Retail.MCP.Endpoints;
 using Ciandt.Retail.MCP.Interfaces.Repositories;
 using Ciandt.Retail.MCP.Repositories;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -141,6 +142,8 @@ public static class DependencyInjectionExtension
             });
         }
         app.MapMcp("/mcp");
+
+        app.MapUserEndpoints();
 
         return app;
     }

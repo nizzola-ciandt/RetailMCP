@@ -35,11 +35,21 @@ public class ProductTool
 
     [McpServerTool(Name = "product_inquiry", Title = "Customer requests detailed information about product features or specifications")]
     [Description("Retrieves detailed product information including specifications, features, and availability.")]
-    public async Task<ProductDetailResult> GetProductDetailsAsync(string productId)
+    public async Task<ProductDetailResult> GetProductDetailsAsync(int productId)
     {
         _logger.LogInformation($"Retrieving details for product ID: {productId}");
         return await _productsService.GetProductDetailsAsync(productId);
     }
+
+    [McpServerTool(Name = "product_image", Title = "Customer requests image of specifc product")]
+    [Description("Retrieves image path of requested product.")]
+    public async Task<ProductImageResult> GetProductImageAsync(int productId)
+    {
+        _logger.LogInformation($"Retrieving details for product ID: {productId}");
+        var prod = await _productsService.GetProductDetailsAsync(productId);
+        return new ProductImageResult() {  ProductId = productId , ImageUrl = prod.ImageUrl??string.Empty, Name = prod.Name };
+    }
+
     /*
     [McpServerTool(Name = "price_comparison", Title = "Customer wants to compare different products or similar models to understand differences")]
     [Description("Compares details between multiple products and returns a comparison table.")]

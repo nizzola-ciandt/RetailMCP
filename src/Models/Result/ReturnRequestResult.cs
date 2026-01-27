@@ -3,7 +3,7 @@
 public class ReturnRequestResult
 {
     public string ReturnId { get; set; }
-    public string OrderId { get; set; }
+    public int OrderId { get; set; }
     public List<ReturnItem> Items { get; set; } = new List<ReturnItem>();
     public string ReturnStatus { get; set; }
     public DateTime RequestDate { get; set; }
@@ -19,7 +19,7 @@ public class ReturnRequestResult
 
 public class ReturnItem
 {
-    public string ProductId { get; set; }
+    public int ProductId { get; set; }
     public string ProductName { get; set; }
     public int Quantity { get; set; }
     public string ReturnReason { get; set; }

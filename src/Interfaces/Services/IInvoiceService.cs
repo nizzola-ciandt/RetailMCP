@@ -5,17 +5,17 @@ public interface IInvoiceService
 {
     /*
     Task<List<OrderSummary>> GetCustomerOrdersAsync(string customerId, int limit = 10, OrderFilters filters = null);
-    Task<OrderStatus> GetOrderStatusAsync(string orderId, string customerId);
+    Task<OrderStatus> GetOrderStatusAsync(int orderId, string customerId);
     Task<CheckoutSession> InitiateCheckoutAsync(string cartId);
-    Task<PaymentProcessingResult> ProcessPaymentAsync(string orderId, PaymentData paymentData);
+    Task<PaymentProcessingResult> ProcessPaymentAsync(int orderId, PaymentData paymentData);
     */
     Task<ShippingOptionsResult> GetShippingOptionsAsync(string userId, string zipCode);
 
-    Task<OrderTrackingResult> GetOrderTrackingInfoAsync(string orderId);
+    Task<OrderTrackingResult> GetOrderTrackingInfoAsync(int orderId);
 
-    Task<OrderIssueResult> RegisterOrderIssueAsync(string orderId, string issueDescription);
+    Task<OrderIssueResult> RegisterOrderIssueAsync(int orderId, string issueDescription);
 
-    Task<ReturnRequestResult> CreateReturnRequestAsync(string orderId, string productId, string reason);
+    Task<ReturnRequestResult> CreateReturnRequestAsync(int orderId, int ProductId, string reason);
 
     Task<RefundStatusResult> GetRefundStatusAsync(string refundId);
 

@@ -9,10 +9,12 @@ public class ProductsService : IProductsService
 {
     public readonly IProductRepository _productRepository;
     public readonly ILogger _logger;
-    public ProductsService(IProductRepository productRepository, ILogger<ProductsService> logger)
+    public readonly string _productImageUrl;
+    public ProductsService(IProductRepository productRepository, ILogger<ProductsService> logger, IConfiguration config)
     {
         _productRepository = productRepository;
         _logger = logger;
+        _productImageUrl = config.GetSection("ProductImageUrl").Value;
     }
     public async Task<ProductSearchResult> SearchProductsAsync(ProductSearchCriteria criteria, int page = 1, int limit = 10)
     {
@@ -22,15 +24,27 @@ public class ProductsService : IProductsService
         response.TotalPages = 1;
         response.TotalCount = response.Products.Count();
 
+        PrepareImageUrl(response.Products);
+
         return response;
     }
 
-    public async Task<ProductDetailResult> GetProductDetailsAsync(string productId)
+    private void PrepareImageUrl(ICollection<ProductSummary> products)
     {
-        return await _productRepository.GetProductDetailsAsync(productId);
+        foreach (var prod in products)
+        {
+            prod.ImageUrl = _productImageUrl + prod.ImageUrl;
+        }
     }
 
-    public async Task<ProductAvailability> CheckProductAvailabilityAsync(string productId, string location = null)
+    public async Task<ProductDetailResult> GetProductDetailsAsync(int productId)
+    {
+        var item = await _productRepository.GetProductDetailsAsync(productId);
+        item.ImageUrl = _productImageUrl + item.ImageUrl;
+        return item;
+    }
+
+    public async Task<ProductAvailability> CheckProductAvailabilityAsync(int ProductId, string location = null)
     {
         throw new NotImplementedException();
     }
@@ -40,7 +54,7 @@ public class ProductsService : IProductsService
         throw new NotImplementedException();
     }
 
-    public async Task<List<ProductReview>> GetProductReviewsAsync(string productId, int limit = 5)
+    public async Task<List<ProductReview>> GetProductReviewsAsync(int ProductId, int limit = 5)
     {
         throw new NotImplementedException();
     }

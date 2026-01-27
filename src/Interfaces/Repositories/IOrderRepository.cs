@@ -6,12 +6,12 @@ namespace Ciandt.Retail.MCP.Interfaces.Repositories;
 
 public interface IOrderRepository
 {
-    Task<string> CreateOrderAsync(int customerId, ICollection<CartItem> items, decimal shippingCost, string? shippingMethod = null, string? shippingZipCode = null);
-    Task<OrderEntity?> GetOrderByIdAsync(string orderId);
+    Task<int> CreateOrderAsync(int customerId, ICollection<CartItem> items, decimal shippingCost, string? shippingMethod = null, string? shippingZipCode = null);
+    Task<OrderEntity?> GetOrderByIdAsync(int orderId);
     Task<ICollection<OrderEntity>> GetOrdersByCustomerIdAsync(int customerId, int page = 1, int pageSize = 10);
-    Task<bool> UpdateOrderStatusAsync(string orderId, OrderStatusEnum newStatus);
-    Task<bool> UpdateTrackingNumberAsync(string orderId, string trackingNumber);
-    Task<OrderTrackingResult> GetOrderTrackingAsync(string orderId);
-    Task<OrderSummary> GetOrderSummaryAsync(string orderId);
-    Task<bool> CancelOrderAsync(string orderId, string reason);
+    Task<bool> UpdateOrderStatusAsync(int orderId, OrderStatusEnum newStatus);
+    Task<bool> UpdateTrackingNumberAsync(int orderId, string trackingNumber);
+    Task<OrderTrackingResult> GetOrderTrackingAsync(int orderId);
+    Task<OrderSummary> GetOrderSummaryAsync(int orderId);
+    Task<bool> CancelOrderAsync(int orderId, string reason);
 }

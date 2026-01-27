@@ -6,7 +6,7 @@ public interface IPromotionRepository
 {
     Task<ICollection<PromotionEntity>> GetActivePromotionsAsync(string? categoryId = null);
     Task<PromotionEntity?> GetPromotionByIdAsync(string promotionId);
-    Task<ICollection<PromotionEntity>> GetPromotionsByProductIdAsync(string productId);
+    Task<ICollection<PromotionEntity>> GetPromotionsByProductIdAsync(int ProductId);
     Task<CouponEntity?> GetCouponByCodeAsync(string couponCode);
     Task<bool> ValidateCouponAsync(string couponCode, decimal cartTotal);
     Task<bool> UseCouponAsync(string couponCode);

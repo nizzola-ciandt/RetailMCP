@@ -52,7 +52,7 @@ public class PromotionRepository : IPromotionRepository
         }
     }
 
-    public async Task<ICollection<PromotionEntity>> GetPromotionsByProductIdAsync(string productId)
+    public async Task<ICollection<PromotionEntity>> GetPromotionsByProductIdAsync(int productId)
     {
         try
         {

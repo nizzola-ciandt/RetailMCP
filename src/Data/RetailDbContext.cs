@@ -87,13 +87,13 @@ public class RetailDbContext : DbContext
         modelBuilder.Entity<ProductEntity>().HasData(
             new ProductEntity
             {
-                ProductId = "ROT-001",
+                Id = 1,
                 Name = "Roteador NetSpeed 500 Dual Band",
                 Brand = "TechConnect",
                 Category = "Roteadores",
                 Price = 299.99m,
                 DiscountedPrice = 249.99m,
-                ImageUrl = "https://example.com/images/router-netspeed-500.jpg",
+                ImageUrl = "roteador1.jpg",
                 AverageRating = 4.7,
                 ReviewCount = 1258,
                 InStock = true,
@@ -106,7 +106,7 @@ public class RetailDbContext : DbContext
             },
             new ProductEntity
             {
-                ProductId = "ROT-002",
+                Id = 2,
                 Name = "Roteador UltraConnect WiFi 6 Mesh",
                 Brand = "NetMaster",
                 Category = "Roteadores",
@@ -123,13 +123,13 @@ public class RetailDbContext : DbContext
             },
             new ProductEntity
             {
-                ProductId = "IMP-001",
+                Id = 3,
                 Name = "Impressora ColorJet Pro Multifuncional",
                 Brand = "PrintMaster",
                 Category = "Impressoras",
                 Price = 899.99m,
                 DiscountedPrice = 799.99m,
-                ImageUrl = "https://example.com/images/printer-colorjet-pro.jpg",
+                ImageUrl = "ImpressoraColorJetProMultifuncional.jpg",
                 AverageRating = 4.3,
                 ReviewCount = 562,
                 InStock = true,
@@ -142,13 +142,13 @@ public class RetailDbContext : DbContext
             },
             new ProductEntity
             {
-                ProductId = "NOT-001",
+                Id = 4,
                 Name = "Notebook UltraBook X5 Core i7",
                 Brand = "TechPro",
                 Category = "Notebooks",
                 Price = 4599.99m,
                 DiscountedPrice = 4299.99m,
-                ImageUrl = "https://example.com/images/notebook-ultrabook-x5.jpg",
+                ImageUrl = "notebook1.jpg",
                 AverageRating = 4.8,
                 ReviewCount = 1879,
                 InStock = true,
@@ -161,12 +161,12 @@ public class RetailDbContext : DbContext
             },
             new ProductEntity
             {
-                ProductId = "TAB-001",
+                Id = 5,
                 Name = "Tablet TabX Pro 10.5\"",
                 Brand = "GalaxyTech",
                 Category = "Tablets",
                 Price = 2199.99m,
-                ImageUrl = "https://example.com/images/tablet-tabx-pro.jpg",
+                ImageUrl = "tablet1.jpg",
                 AverageRating = 4.5,
                 ReviewCount = 892,
                 InStock = false,
