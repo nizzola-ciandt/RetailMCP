@@ -37,12 +37,14 @@ public class ProductsService : IProductsService
         }
     }
 
-    public async Task<ProductDetailResult> GetProductDetailsAsync(string productId)
+    public async Task<ProductDetailResult> GetProductDetailsAsync(int productId)
     {
-        return await _productRepository.GetProductDetailsAsync(productId);
+        var item = await _productRepository.GetProductDetailsAsync(productId);
+        item.ImageUrl = _productImageUrl + item.ImageUrl;
+        return item;
     }
 
-    public async Task<ProductAvailability> CheckProductAvailabilityAsync(string productId, string location = null)
+    public async Task<ProductAvailability> CheckProductAvailabilityAsync(int ProductId, string location = null)
     {
         throw new NotImplementedException();
     }
@@ -52,7 +54,7 @@ public class ProductsService : IProductsService
         throw new NotImplementedException();
     }
 
-    public async Task<List<ProductReview>> GetProductReviewsAsync(string productId, int limit = 5)
+    public async Task<List<ProductReview>> GetProductReviewsAsync(int ProductId, int limit = 5)
     {
         throw new NotImplementedException();
     }

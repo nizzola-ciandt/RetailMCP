@@ -24,7 +24,7 @@ public class PaymentRepository : IPaymentRepository
         return await Task.FromResult(GetAvailablePaymentMethods());
     }
 
-    public async Task<string> CreatePaymentAsync(string orderId, string paymentMethodId, decimal amount, int installments = 1)
+    public async Task<string> CreatePaymentAsync(int orderId, string paymentMethodId, decimal amount, int installments = 1)
     {
         try
         {
@@ -71,7 +71,7 @@ public class PaymentRepository : IPaymentRepository
         }
     }
 
-    public async Task<ICollection<PaymentEntity>> GetPaymentsByOrderIdAsync(string orderId)
+    public async Task<ICollection<PaymentEntity>> GetPaymentsByOrderIdAsync(int orderId)
     {
         try
         {

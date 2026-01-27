@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ciandt.Retail.MCP.Migrations
 {
     [DbContext(typeof(RetailDbContext))]
-    [Migration("20260121191744_gender")]
-    partial class gender
+    [Migration("20260127130758_inicial")]
+    partial class inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -73,7 +73,7 @@ namespace Ciandt.Retail.MCP.Migrations
                         {
                             Id = 1,
                             City = "New York",
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 17, 44, 170, DateTimeKind.Utc).AddTicks(2873),
+                            CreatedAt = new DateTime(2026, 1, 27, 13, 7, 58, 231, DateTimeKind.Utc).AddTicks(791),
                             CustomerId = 1,
                             IsDefault = true,
                             State = "NY",
@@ -84,7 +84,7 @@ namespace Ciandt.Retail.MCP.Migrations
                         {
                             Id = 2,
                             City = "Los Angeles",
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 17, 44, 170, DateTimeKind.Utc).AddTicks(2875),
+                            CreatedAt = new DateTime(2026, 1, 27, 13, 7, 58, 231, DateTimeKind.Utc).AddTicks(794),
                             CustomerId = 2,
                             IsDefault = true,
                             State = "CA",
@@ -95,7 +95,7 @@ namespace Ciandt.Retail.MCP.Migrations
                         {
                             Id = 3,
                             City = "Los Angeles",
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 17, 44, 170, DateTimeKind.Utc).AddTicks(2876),
+                            CreatedAt = new DateTime(2026, 1, 27, 13, 7, 58, 231, DateTimeKind.Utc).AddTicks(795),
                             CustomerId = 2,
                             IsDefault = false,
                             State = "CA",
@@ -145,10 +145,9 @@ namespace Ciandt.Retail.MCP.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("ProductId")
-                        .IsRequired()
+                    b.Property<int>("ProductId")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("int");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
@@ -265,7 +264,7 @@ namespace Ciandt.Retail.MCP.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 17, 44, 170, DateTimeKind.Utc).AddTicks(2845),
+                            CreatedAt = new DateTime(2026, 1, 27, 13, 7, 58, 231, DateTimeKind.Utc).AddTicks(768),
                             DocumentCPF = "",
                             Email = "marcio.nizzola@ciandt.com",
                             Gender = "",
@@ -276,7 +275,7 @@ namespace Ciandt.Retail.MCP.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 17, 44, 170, DateTimeKind.Utc).AddTicks(2847),
+                            CreatedAt = new DateTime(2026, 1, 27, 13, 7, 58, 231, DateTimeKind.Utc).AddTicks(770),
                             DocumentCPF = "",
                             Email = "ricardoso@ciandt.com",
                             Gender = "",
@@ -288,9 +287,11 @@ namespace Ciandt.Retail.MCP.Migrations
 
             modelBuilder.Entity("Ciandt.Retail.MCP.Models.Entities.OrderEntity", b =>
                 {
-                    b.Property<string>("OrderId")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("CancelledAt")
                         .HasColumnType("datetime2");
@@ -332,7 +333,7 @@ namespace Ciandt.Retail.MCP.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("OrderId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
@@ -345,17 +346,13 @@ namespace Ciandt.Retail.MCP.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("OrderId")
-                        .IsRequired()
+                    b.Property<int>("OrderId")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("int");
 
-                    b.Property<string>("ProductId")
-                        .IsRequired()
+                    b.Property<int>("ProductId")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("int");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
@@ -375,8 +372,6 @@ namespace Ciandt.Retail.MCP.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ProductId");
-
                     b.ToTable("OrderItems");
                 });
 
@@ -392,16 +387,18 @@ namespace Ciandt.Retail.MCP.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("InstallmentValue")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Installments")
                         .HasColumnType("int");
 
-                    b.Property<string>("OrderId")
-                        .IsRequired()
+                    b.Property<int>("OrderId")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("int");
 
                     b.Property<string>("PaymentMethodId")
                         .IsRequired()
@@ -433,9 +430,11 @@ namespace Ciandt.Retail.MCP.Migrations
 
             modelBuilder.Entity("Ciandt.Retail.MCP.Models.Entities.ProductEntity", b =>
                 {
-                    b.Property<string>("ProductId")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AvailableColors")
                         .HasMaxLength(500)
@@ -498,7 +497,7 @@ namespace Ciandt.Retail.MCP.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ProductId");
+                    b.HasKey("Id");
 
                     b.HasIndex("Brand");
 
@@ -509,15 +508,15 @@ namespace Ciandt.Retail.MCP.Migrations
                     b.HasData(
                         new
                         {
-                            ProductId = "ROT-001",
+                            Id = 1,
                             AvailableColors = "[\"Preto\",\"Branco\"]",
                             AverageRating = 4.7000000000000002,
                             Brand = "TechConnect",
                             Category = "Roteadores",
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 17, 44, 170, DateTimeKind.Utc).AddTicks(2674),
+                            CreatedAt = new DateTime(2026, 1, 27, 13, 7, 58, 231, DateTimeKind.Utc).AddTicks(613),
                             DiscountedPrice = 249.99m,
                             HasPromotion = true,
-                            ImageUrl = "https://example.com/images/router-netspeed-500.jpg",
+                            ImageUrl = "roteador1.jpg",
                             InStock = true,
                             IsBestSeller = true,
                             IsNew = false,
@@ -528,12 +527,12 @@ namespace Ciandt.Retail.MCP.Migrations
                         },
                         new
                         {
-                            ProductId = "ROT-002",
+                            Id = 2,
                             AvailableColors = "[\"Preto\"]",
                             AverageRating = 4.9000000000000004,
                             Brand = "NetMaster",
                             Category = "Roteadores",
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 17, 44, 170, DateTimeKind.Utc).AddTicks(2676),
+                            CreatedAt = new DateTime(2026, 1, 27, 13, 7, 58, 231, DateTimeKind.Utc).AddTicks(615),
                             HasPromotion = false,
                             ImageUrl = "https://example.com/images/router-ultraconnect-wifi6.jpg",
                             InStock = true,
@@ -545,15 +544,15 @@ namespace Ciandt.Retail.MCP.Migrations
                         },
                         new
                         {
-                            ProductId = "IMP-001",
+                            Id = 3,
                             AvailableColors = "[\"Preto\",\"Cinza\"]",
                             AverageRating = 4.2999999999999998,
                             Brand = "PrintMaster",
                             Category = "Impressoras",
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 17, 44, 170, DateTimeKind.Utc).AddTicks(2679),
+                            CreatedAt = new DateTime(2026, 1, 27, 13, 7, 58, 231, DateTimeKind.Utc).AddTicks(618),
                             DiscountedPrice = 799.99m,
                             HasPromotion = true,
-                            ImageUrl = "https://example.com/images/printer-colorjet-pro.jpg",
+                            ImageUrl = "ImpressoraColorJetProMultifuncional.jpg",
                             InStock = true,
                             IsBestSeller = false,
                             IsNew = false,
@@ -564,15 +563,15 @@ namespace Ciandt.Retail.MCP.Migrations
                         },
                         new
                         {
-                            ProductId = "NOT-001",
+                            Id = 4,
                             AvailableColors = "[\"Prata\",\"Grafite\"]",
                             AverageRating = 4.7999999999999998,
                             Brand = "TechPro",
                             Category = "Notebooks",
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 17, 44, 170, DateTimeKind.Utc).AddTicks(2682),
+                            CreatedAt = new DateTime(2026, 1, 27, 13, 7, 58, 231, DateTimeKind.Utc).AddTicks(621),
                             DiscountedPrice = 4299.99m,
                             HasPromotion = true,
-                            ImageUrl = "https://example.com/images/notebook-ultrabook-x5.jpg",
+                            ImageUrl = "notebook1.jpg",
                             InStock = true,
                             IsBestSeller = true,
                             IsNew = false,
@@ -583,15 +582,15 @@ namespace Ciandt.Retail.MCP.Migrations
                         },
                         new
                         {
-                            ProductId = "TAB-001",
+                            Id = 5,
                             AvailableColors = "[\"Preto\",\"Azul\",\"Rosa\"]",
                             AvailableSizes = "[\"64GB\",\"128GB\",\"256GB\"]",
                             AverageRating = 4.5,
                             Brand = "GalaxyTech",
                             Category = "Tablets",
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 17, 44, 170, DateTimeKind.Utc).AddTicks(2685),
+                            CreatedAt = new DateTime(2026, 1, 27, 13, 7, 58, 231, DateTimeKind.Utc).AddTicks(623),
                             HasPromotion = false,
-                            ImageUrl = "https://example.com/images/tablet-tabx-pro.jpg",
+                            ImageUrl = "tablet1.jpg",
                             InStock = false,
                             IsBestSeller = false,
                             IsNew = true,
@@ -630,9 +629,9 @@ namespace Ciandt.Retail.MCP.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -701,15 +700,15 @@ namespace Ciandt.Retail.MCP.Migrations
 
             modelBuilder.Entity("Ciandt.Retail.MCP.Models.Entities.OrderItemEntity", b =>
                 {
-                    b.HasOne("Ciandt.Retail.MCP.Models.Entities.OrderEntity", "Order")
+                    b.HasOne("Ciandt.Retail.MCP.Models.Entities.ProductEntity", "Product")
                         .WithMany("OrderItems")
-                        .HasForeignKey("OrderId")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Ciandt.Retail.MCP.Models.Entities.ProductEntity", "Product")
+                    b.HasOne("Ciandt.Retail.MCP.Models.Entities.OrderEntity", "Order")
                         .WithMany("OrderItems")
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

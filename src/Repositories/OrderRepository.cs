@@ -18,15 +18,12 @@ public class OrderRepository : IOrderRepository
         _logger = logger;
     }
 
-    public async Task<string> CreateOrderAsync(int customerId, ICollection<CartItem> items, decimal shippingCost, string? shippingMethod = null, string? shippingZipCode = null)
+    public async Task<int> CreateOrderAsync(int customerId, ICollection<CartItem> items, decimal shippingCost, string? shippingMethod = null, string? shippingZipCode = null)
     {
         try
         {
-            var orderId = Guid.NewGuid().ToString("N");
-
             var orderItems = items.Select(item => new OrderItemEntity
             {
-                OrderId = orderId,
                 ProductId = item.ProductId,
                 ProductName = item.ProductName,
                 Quantity = item.Quantity,
@@ -38,7 +35,7 @@ public class OrderRepository : IOrderRepository
 
             var order = new OrderEntity
             {
-                OrderId = orderId,
+             //   OrderId = orderId,
                 CustomerId = customerId,
                 TotalAmount = totalAmount,
                 ShippingCost = shippingCost,
@@ -53,8 +50,8 @@ public class OrderRepository : IOrderRepository
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation($"Order created successfully: {orderId}");
-            return orderId;
+            _logger.LogInformation($"Order created successfully: {order.Id}");
+            return order.Id;
         }
         catch (Exception ex)
         {
@@ -63,7 +60,7 @@ public class OrderRepository : IOrderRepository
         }
     }
 
-    public async Task<OrderEntity?> GetOrderByIdAsync(string orderId)
+    public async Task<OrderEntity?> GetOrderByIdAsync(int orderId)
     {
         try
         {
@@ -71,7 +68,7 @@ public class OrderRepository : IOrderRepository
                 .Include(o => o.Customer)
                 .Include(o => o.OrderItems)
                 .Include(o => o.Payments)
-                .FirstOrDefaultAsync(o => o.OrderId == orderId);
+                .FirstOrDefaultAsync(o => o.Id == orderId);
         }
         catch (Exception ex)
         {
@@ -100,7 +97,7 @@ public class OrderRepository : IOrderRepository
         }
     }
 
-    public async Task<bool> UpdateOrderStatusAsync(string orderId, OrderStatusEnum newStatus)
+    public async Task<bool> UpdateOrderStatusAsync(int orderId, OrderStatusEnum newStatus)
     {
         try
         {
@@ -137,7 +134,7 @@ public class OrderRepository : IOrderRepository
         }
     }
 
-    public async Task<bool> UpdateTrackingNumberAsync(string orderId, string trackingNumber)
+    public async Task<bool> UpdateTrackingNumberAsync(int orderId, string trackingNumber)
     {
         try
         {
@@ -161,7 +158,7 @@ public class OrderRepository : IOrderRepository
         }
     }
 
-    public async Task<OrderTrackingResult> GetOrderTrackingAsync(string orderId)
+    public async Task<OrderTrackingResult> GetOrderTrackingAsync(int orderId)
     {
         try
         {
@@ -178,7 +175,7 @@ public class OrderRepository : IOrderRepository
             return new OrderTrackingResult
             {
                 Success = true,
-                OrderId = order.OrderId,
+                OrderId = order.Id,
                 Status = order.Status,
                 TrackingNumber = order.TrackingNumber,
                 ShippingMethod = order.ShippingMethod,
@@ -198,7 +195,7 @@ public class OrderRepository : IOrderRepository
         }
     }
 
-    public async Task<OrderSummary> GetOrderSummaryAsync(string orderId)
+    public async Task<OrderSummary> GetOrderSummaryAsync(int orderId)
     {
         try
         {
@@ -210,7 +207,7 @@ public class OrderRepository : IOrderRepository
 
             return new OrderSummary
             {
-                OrderId = order.OrderId,
+                OrderId = order.Id,
                 CustomerId = order.CustomerId,
                 CustomerName = order.Customer.Name,
                 TotalAmount = order.TotalAmount,
@@ -248,7 +245,7 @@ public class OrderRepository : IOrderRepository
         }
     }
 
-    public async Task<bool> CancelOrderAsync(string orderId, string reason)
+    public async Task<bool> CancelOrderAsync(int orderId, string reason)
     {
         try
         {

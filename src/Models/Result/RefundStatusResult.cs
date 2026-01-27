@@ -5,7 +5,7 @@ namespace Ciandt.Retail.MCP.Models.Result;
 public class RefundStatusResult
 {
     public string RefundId { get; set; }
-    public string OrderId { get; set; }
+    public int OrderId { get; set; }
     public string RefundStatus { get; set; }
     public decimal RefundAmount { get; set; }
     public string RefundMethod { get; set; }
@@ -22,7 +22,7 @@ public class RefundStatusResult
 
 public class RefundItem
 {
-    public string ProductId { get; set; }
+    public int ProductId { get; set; }
     public string ProductName { get; set; }
     public int Quantity { get; set; }
     public decimal RefundAmount { get; set; }

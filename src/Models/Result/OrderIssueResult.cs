@@ -3,7 +3,7 @@
 public class OrderIssueResult
 {
     public string IssueId { get; set; }
-    public string OrderId { get; set; }
+    public int OrderId { get; set; }
     public string IssueType { get; set; }
     public string IssueStatus { get; set; }
     public DateTime ReportedDate { get; set; }

@@ -24,14 +24,14 @@ public class CartService : ICartService
         _logger = logger;
     }
 
-    public async Task<CartUpdateResult> AddItemAsync(string userId, string productId, int quantity)
+    public async Task<CartUpdateResult> AddItemAsync(string userId, int productId, int quantity)
     {
         try
         {
             if (string.IsNullOrEmpty(userId))
                 return CartUpdateResult.Failed("ID do usuário é obrigatório.");
 
-            if (string.IsNullOrEmpty(productId))
+            if (productId==0)
                 return CartUpdateResult.Failed("ID do produto é obrigatório.");
 
             if (quantity <= 0)
@@ -74,14 +74,14 @@ public class CartService : ICartService
         }
     }
 
-    public async Task<CartUpdateResult> UpdateItemQuantityAsync(string userId, string productId, int newQuantity)
+    public async Task<CartUpdateResult> UpdateItemQuantityAsync(string userId, int productId, int newQuantity)
     {
         try
         {
             if (string.IsNullOrEmpty(userId))
                 return CartUpdateResult.Failed("ID do usuário é obrigatório.");
 
-            if (string.IsNullOrEmpty(productId))
+            if (productId==0)
                 return CartUpdateResult.Failed("ID do produto é obrigatório.");
 
             var cart = await _cartRepository.GetCartAsync(userId);

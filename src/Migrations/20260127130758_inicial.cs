@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Ciandt.Retail.MCP.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class inicial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -43,7 +43,9 @@ namespace Ciandt.Retail.MCP.Migrations
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    DocumentCPF = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: false),
                     Zip = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Gender = table.Column<string>(type: "nvarchar(1)", maxLength: 1, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -56,7 +58,8 @@ namespace Ciandt.Retail.MCP.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    ProductId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Brand = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Category = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
@@ -77,7 +80,7 @@ namespace Ciandt.Retail.MCP.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.ProductId);
+                    table.PrimaryKey("PK_Products", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -90,7 +93,7 @@ namespace Ciandt.Retail.MCP.Migrations
                     DiscountPercentage = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
                     DiscountAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     CategoryId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    ProductId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    ProductId = table.Column<int>(type: "int", maxLength: 50, nullable: true),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
@@ -151,7 +154,8 @@ namespace Ciandt.Retail.MCP.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    OrderId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CustomerId = table.Column<int>(type: "int", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ShippingCost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -167,7 +171,7 @@ namespace Ciandt.Retail.MCP.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Orders", x => x.OrderId);
+                    table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Orders_Customers_CustomerId",
                         column: x => x.CustomerId,
@@ -183,7 +187,7 @@ namespace Ciandt.Retail.MCP.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CartId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ProductId = table.Column<int>(type: "int", maxLength: 50, nullable: false),
                     ProductName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
@@ -202,7 +206,7 @@ namespace Ciandt.Retail.MCP.Migrations
                         name: "FK_CartItems_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
-                        principalColumn: "ProductId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -210,10 +214,9 @@ namespace Ciandt.Retail.MCP.Migrations
                 name: "OrderItems",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OrderId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    ProductId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    OrderId = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    ProductId = table.Column<int>(type: "int", maxLength: 50, nullable: false),
                     ProductName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -226,13 +229,13 @@ namespace Ciandt.Retail.MCP.Migrations
                         name: "FK_OrderItems_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
-                        principalColumn: "OrderId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrderItems_Products_ProductId",
-                        column: x => x.ProductId,
+                        name: "FK_OrderItems_Products_Id",
+                        column: x => x.Id,
                         principalTable: "Products",
-                        principalColumn: "ProductId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -241,7 +244,7 @@ namespace Ciandt.Retail.MCP.Migrations
                 columns: table => new
                 {
                     PaymentId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    OrderId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    OrderId = table.Column<int>(type: "int", maxLength: 50, nullable: false),
                     PaymentMethodId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Installments = table.Column<int>(type: "int", nullable: false),
@@ -250,7 +253,8 @@ namespace Ciandt.Retail.MCP.Migrations
                     PaymentUrl = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     TransactionId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ProcessedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    ProcessedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -259,29 +263,29 @@ namespace Ciandt.Retail.MCP.Migrations
                         name: "FK_Payments_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
-                        principalColumn: "OrderId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "Customers",
-                columns: new[] { "Id", "CreatedAt", "Email", "Name", "Phone", "UpdatedAt", "Zip" },
+                columns: new[] { "Id", "CreatedAt", "DocumentCPF", "Email", "Gender", "Name", "Phone", "UpdatedAt", "Zip" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2026, 1, 20, 12, 29, 32, 814, DateTimeKind.Utc).AddTicks(1014), "marcio.nizzola@ciandt.com", "Marcio Nizzola", "5511984701979", null, "13.328-283" },
-                    { 2, new DateTime(2026, 1, 20, 12, 29, 32, 814, DateTimeKind.Utc).AddTicks(1016), "ricardoso@ciandt.com", "Ricardo Odorczyk", "5541999089809", null, "67890" }
+                    { 1, new DateTime(2026, 1, 27, 13, 7, 58, 231, DateTimeKind.Utc).AddTicks(768), "", "marcio.nizzola@ciandt.com", "", "Marcio Nizzola", "5511984701979", null, "13.328-283" },
+                    { 2, new DateTime(2026, 1, 27, 13, 7, 58, 231, DateTimeKind.Utc).AddTicks(770), "", "ricardoso@ciandt.com", "", "Ricardo Odorczyk", "5541999089809", null, "67890" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "ProductId", "AvailableColors", "AvailableSizes", "AverageRating", "Brand", "Category", "CreatedAt", "DiscountedPrice", "HasPromotion", "ImageUrl", "InStock", "IsBestSeller", "IsNew", "Name", "Price", "PromoLabel", "ReviewCount", "UpdatedAt" },
+                columns: new[] { "Id", "AvailableColors", "AvailableSizes", "AverageRating", "Brand", "Category", "CreatedAt", "DiscountedPrice", "HasPromotion", "ImageUrl", "InStock", "IsBestSeller", "IsNew", "Name", "Price", "PromoLabel", "ReviewCount", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { "IMP-001", "[\"Preto\",\"Cinza\"]", null, 4.2999999999999998, "PrintMaster", "Impressoras", new DateTime(2026, 1, 20, 12, 29, 32, 814, DateTimeKind.Utc).AddTicks(813), 799.99m, true, "https://example.com/images/printer-colorjet-pro.jpg", true, false, false, "Impressora ColorJet Pro Multifuncional", 899.99m, "Frete Grátis", 562, null },
-                    { "NOT-001", "[\"Prata\",\"Grafite\"]", null, 4.7999999999999998, "TechPro", "Notebooks", new DateTime(2026, 1, 20, 12, 29, 32, 814, DateTimeKind.Utc).AddTicks(850), 4299.99m, true, "https://example.com/images/notebook-ultrabook-x5.jpg", true, true, false, "Notebook UltraBook X5 Core i7", 4599.99m, "Cashback 10%", 1879, null },
-                    { "ROT-001", "[\"Preto\",\"Branco\"]", null, 4.7000000000000002, "TechConnect", "Roteadores", new DateTime(2026, 1, 20, 12, 29, 32, 814, DateTimeKind.Utc).AddTicks(803), 249.99m, true, "https://example.com/images/router-netspeed-500.jpg", true, true, false, "Roteador NetSpeed 500 Dual Band", 299.99m, "Oferta da Semana", 1258, null },
-                    { "ROT-002", "[\"Preto\"]", null, 4.9000000000000004, "NetMaster", "Roteadores", new DateTime(2026, 1, 20, 12, 29, 32, 814, DateTimeKind.Utc).AddTicks(808), null, false, "https://example.com/images/router-ultraconnect-wifi6.jpg", true, false, true, "Roteador UltraConnect WiFi 6 Mesh", 599.99m, null, 358, null },
-                    { "TAB-001", "[\"Preto\",\"Azul\",\"Rosa\"]", "[\"64GB\",\"128GB\",\"256GB\"]", 4.5, "GalaxyTech", "Tablets", new DateTime(2026, 1, 20, 12, 29, 32, 814, DateTimeKind.Utc).AddTicks(852), null, false, "https://example.com/images/tablet-tabx-pro.jpg", false, false, true, "Tablet TabX Pro 10.5\"", 2199.99m, null, 892, null }
+                    { 1, "[\"Preto\",\"Branco\"]", null, 4.7000000000000002, "TechConnect", "Roteadores", new DateTime(2026, 1, 27, 13, 7, 58, 231, DateTimeKind.Utc).AddTicks(613), 249.99m, true, "roteador1.jpg", true, true, false, "Roteador NetSpeed 500 Dual Band", 299.99m, "Oferta da Semana", 1258, null },
+                    { 2, "[\"Preto\"]", null, 4.9000000000000004, "NetMaster", "Roteadores", new DateTime(2026, 1, 27, 13, 7, 58, 231, DateTimeKind.Utc).AddTicks(615), null, false, "https://example.com/images/router-ultraconnect-wifi6.jpg", true, false, true, "Roteador UltraConnect WiFi 6 Mesh", 599.99m, null, 358, null },
+                    { 3, "[\"Preto\",\"Cinza\"]", null, 4.2999999999999998, "PrintMaster", "Impressoras", new DateTime(2026, 1, 27, 13, 7, 58, 231, DateTimeKind.Utc).AddTicks(618), 799.99m, true, "ImpressoraColorJetProMultifuncional.jpg", true, false, false, "Impressora ColorJet Pro Multifuncional", 899.99m, "Frete Grátis", 562, null },
+                    { 4, "[\"Prata\",\"Grafite\"]", null, 4.7999999999999998, "TechPro", "Notebooks", new DateTime(2026, 1, 27, 13, 7, 58, 231, DateTimeKind.Utc).AddTicks(621), 4299.99m, true, "notebook1.jpg", true, true, false, "Notebook UltraBook X5 Core i7", 4599.99m, "Cashback 10%", 1879, null },
+                    { 5, "[\"Preto\",\"Azul\",\"Rosa\"]", "[\"64GB\",\"128GB\",\"256GB\"]", 4.5, "GalaxyTech", "Tablets", new DateTime(2026, 1, 27, 13, 7, 58, 231, DateTimeKind.Utc).AddTicks(623), null, false, "tablet1.jpg", false, false, true, "Tablet TabX Pro 10.5\"", 2199.99m, null, 892, null }
                 });
 
             migrationBuilder.InsertData(
@@ -289,9 +293,9 @@ namespace Ciandt.Retail.MCP.Migrations
                 columns: new[] { "Id", "City", "CreatedAt", "CustomerId", "IsDefault", "State", "Street", "ZipCode" },
                 values: new object[,]
                 {
-                    { 1, "New York", new DateTime(2026, 1, 20, 12, 29, 32, 814, DateTimeKind.Utc).AddTicks(1043), 1, true, "NY", "123 Main St", "12345" },
-                    { 2, "Los Angeles", new DateTime(2026, 1, 20, 12, 29, 32, 814, DateTimeKind.Utc).AddTicks(1044), 2, true, "CA", "456 Broadway", "67890" },
-                    { 3, "Los Angeles", new DateTime(2026, 1, 20, 12, 29, 32, 814, DateTimeKind.Utc).AddTicks(1046), 2, false, "CA", "789 Park Ave", "67891" }
+                    { 1, "New York", new DateTime(2026, 1, 27, 13, 7, 58, 231, DateTimeKind.Utc).AddTicks(791), 1, true, "NY", "123 Main St", "12345" },
+                    { 2, "Los Angeles", new DateTime(2026, 1, 27, 13, 7, 58, 231, DateTimeKind.Utc).AddTicks(794), 2, true, "CA", "456 Broadway", "67890" },
+                    { 3, "Los Angeles", new DateTime(2026, 1, 27, 13, 7, 58, 231, DateTimeKind.Utc).AddTicks(795), 2, false, "CA", "789 Park Ave", "67891" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -324,11 +328,6 @@ namespace Ciandt.Retail.MCP.Migrations
                 name: "IX_OrderItems_OrderId",
                 table: "OrderItems",
                 column: "OrderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrderItems_ProductId",
-                table: "OrderItems",
-                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_CustomerId",

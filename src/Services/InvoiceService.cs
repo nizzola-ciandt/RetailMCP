@@ -16,12 +16,12 @@ public class InvoiceService : IInvoiceService
         _invoiceRepository = invoiceRepository;
         _logger = logger;
     }
-    public Task<ReturnRequestResult> CreateReturnRequestAsync(string orderId, string productId, string reason)
+    public Task<ReturnRequestResult> CreateReturnRequestAsync(int orderId, int ProductId, string reason)
     {
         throw new NotImplementedException();
     }
 
-    public Task<OrderTrackingResult> GetOrderTrackingInfoAsync(string orderId)
+    public Task<OrderTrackingResult> GetOrderTrackingInfoAsync(int orderId)
     {
         throw new NotImplementedException();
     }
@@ -50,7 +50,7 @@ public class InvoiceService : IInvoiceService
         throw new NotImplementedException();
     }
 
-    public Task<OrderIssueResult> RegisterOrderIssueAsync(string orderId, string issueDescription)
+    public Task<OrderIssueResult> RegisterOrderIssueAsync(int orderId, string issueDescription)
     {
         throw new NotImplementedException();
     }

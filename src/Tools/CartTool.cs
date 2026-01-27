@@ -22,7 +22,7 @@ public class CartTool
 
     [McpServerTool(Name = "add_to_cart", Title = "Customer expresses interest in adding a product to their shopping cart")]
     [Description("Adds a specified product to the customer's shopping cart, required fields are: userId from user data, productId has the same name in product.")]
-    public async Task<CartUpdateResult> AddProductToCartAsync(string userId, string productId, int quantity)
+    public async Task<CartUpdateResult> AddProductToCartAsync(string userId, int productId, int quantity)
     {
         _logger.LogInformation($"Adding product {productId} (qty: {quantity}) to cart for user {userId}");
         return await _cartService.AddItemAsync(userId, productId, quantity);
@@ -30,7 +30,7 @@ public class CartTool
 
     [McpServerTool(Name = "cart_management", Title = "Customer wants to modify items in the cart, the field productId is the same provided in product list")]
     [Description("Updates quantities or removes items from the shopping cart.")]
-    public async Task<CartUpdateResult> UpdateCartItemAsync(string userId, string productId, int newQuantity)
+    public async Task<CartUpdateResult> UpdateCartItemAsync(string userId, int productId, int newQuantity)
     {
         _logger.LogInformation($"Updating cart item {productId} to quantity {newQuantity} for user {userId}");
         return await _cartService.UpdateItemQuantityAsync(userId, productId, newQuantity);

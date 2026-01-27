@@ -7,8 +7,8 @@ namespace Ciandt.Retail.MCP.Models.Entities;
 public class OrderEntity
 {
     [Key]
-    [MaxLength(50)]
-    public string OrderId { get; set; } = Guid.NewGuid().ToString();
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
 
     [Required]
     public int CustomerId { get; set; }

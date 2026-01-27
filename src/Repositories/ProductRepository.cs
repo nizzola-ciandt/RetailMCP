@@ -50,7 +50,6 @@ public class ProductRepository : IProductRepository
 
             return products.Select(p => new ProductSummary
             {
-                ProductId = p.ProductId,
                 Name = p.Name,
                 Brand = p.Brand,
                 Category = p.Category,
@@ -75,12 +74,12 @@ public class ProductRepository : IProductRepository
         }
     }
 
-    public async Task<ProductDetailResult> GetProductDetailsAsync(string productId)
+    public async Task<ProductDetailResult> GetProductDetailsAsync(int productId)
     {
         try
         {
             var product = await _context.Products
-                .FirstOrDefaultAsync(p => p.ProductId == productId);
+                .FirstOrDefaultAsync(p => p.Id == productId);
 
             if (product == null)
             {
@@ -90,7 +89,7 @@ public class ProductRepository : IProductRepository
 
             var productSummary = new ProductSummary
             {
-                ProductId = product.ProductId,
+                ProductId = product.Id,
                 Name = product.Name,
                 Brand = product.Brand,
                 Category = product.Category,
@@ -135,12 +134,12 @@ public class ProductRepository : IProductRepository
         }
     }
 
-    public Task<ProductAvailability> CheckProductAvailabilityAsync(string productId, string location = null)
+    public Task<ProductAvailability> CheckProductAvailabilityAsync(int ProductId, string location = null)
     {
         throw new NotImplementedException();
     }
 
-    public Task<List<ProductReview>> GetProductReviewsAsync(string productId, int limit = 5)
+    public Task<List<ProductReview>> GetProductReviewsAsync(int ProductId, int limit = 5)
     {
         throw new NotImplementedException();
     }

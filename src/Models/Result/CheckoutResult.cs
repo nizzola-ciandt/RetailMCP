@@ -4,7 +4,7 @@ public class CheckoutResult
 {
     public bool Success { get; set; }
     public string Message { get; set; } = string.Empty;
-    public string? OrderId { get; set; }
+    public int? OrderId { get; set; }
     public decimal Subtotal { get; set; }
     public decimal ShippingCost { get; set; }
     public decimal TotalAmount { get; set; }
@@ -12,7 +12,7 @@ public class CheckoutResult
     public DateTime? CreatedAt { get; set; }
 
     public static CheckoutResult Succeeded(
-        string orderId,
+        int orderId,
         decimal subtotal,
         decimal shippingCost,
         decimal totalAmount,
@@ -37,7 +37,7 @@ public class CheckoutResult
         {
             Success = false,
             Message = message,
-            OrderId = null,
+            OrderId = 0,
             Subtotal = 0,
             ShippingCost = 0,
             TotalAmount = 0,
@@ -48,7 +48,7 @@ public class CheckoutResult
 
     // Mantém compatibilidade com o método antigo
     [Obsolete("Use Succeeded(orderId, subtotal, shippingCost, totalAmount, items) instead")]
-    public static CheckoutResult Succeeded(Cart cart, string checkoutId)
+    public static CheckoutResult Succeeded(Cart cart, int checkoutId)
     {
         var subtotal = cart.Items.Sum(i => i.Price * i.Quantity);
         return new CheckoutResult

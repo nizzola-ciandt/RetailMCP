@@ -4,7 +4,7 @@ namespace Ciandt.Retail.MCP.Models.Result;
 
 public class OrderTrackingResult
 {
-    public string OrderId { get; set; }
+    public int OrderId { get; set; }
     public OrderStatusEnum Status { get; set; }
     public DateTime OrderDate { get; set; }
     public decimal OrderTotal { get; set; }

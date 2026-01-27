@@ -30,14 +30,14 @@ public class OrderTool
 
     [McpServerTool(Name = "order_status", Title = "Customer request status your order including delivery and payment information")]
     [Description("Customer request status your order including delivery and payment information")]
-    public async Task<OrderSummary> RequestOrderStatusAsync(string orderId)
+    public async Task<OrderSummary> RequestOrderStatusAsync(int orderId)
     {
         try
         {
             _logger.LogInformation($"Getting order status for: {orderId}");
             var orderSummary = await _orderRepository.GetOrderSummaryAsync(orderId);
 
-            if (orderSummary == null || string.IsNullOrEmpty(orderSummary.OrderId))
+            if (orderSummary == null || orderSummary.OrderId == 0)
             {
                 _logger.LogWarning($"Order not found: {orderId}");
                 return new OrderSummary();
@@ -75,8 +75,8 @@ public class OrderTool
             var orderSummaries = new List<OrderSummary>();
             foreach (var order in orders)
             {
-                var summary = await _orderRepository.GetOrderSummaryAsync(order.OrderId);
-                if (summary != null && !string.IsNullOrEmpty(summary.OrderId))
+                var summary = await _orderRepository.GetOrderSummaryAsync(order.Id);
+                if (summary != null && summary.OrderId>0)
                 {
                     orderSummaries.Add(summary);
                 }
@@ -105,7 +105,7 @@ public class OrderTool
 
     [McpServerTool(Name = "order_tracking", Title = "Customer wants to monitor the status of a delivery or track an existing order")]
     [Description("Retrieves the current status and tracking information for a specific order.")]
-    public async Task<OrderTrackingResult> TrackOrderAsync(string orderId)
+    public async Task<OrderTrackingResult> TrackOrderAsync(int orderId)
     {
         try
         {
@@ -125,7 +125,7 @@ public class OrderTool
 
     [McpServerTool(Name = "order_problem", Title = "Customer reports problems with an order")]
     [Description("Records a problem with an order and initiates the resolution process.")]
-    public async Task<OrderIssueResult> ReportOrderIssueAsync(string orderId, string issueDescription)
+    public async Task<OrderIssueResult> ReportOrderIssueAsync(int orderId, string issueDescription)
     {
         try
         {
@@ -169,7 +169,7 @@ public class OrderTool
 
     [McpServerTool(Name = "return_request", Title = "Customer wants to initiate a product return process")]
     [Description("Initiates the return process for a purchased product.")]
-    public async Task<ReturnRequestResult> InitiateReturnAsync(string orderId, string productId, string reason)
+    public async Task<ReturnRequestResult> InitiateReturnAsync(int orderId, int productId, string reason)
     {
         try
         {
@@ -279,7 +279,7 @@ public class OrderTool
 
     [McpServerTool(Name = "order_payment_status", Title = "Customer request status of all payments of your order")]
     [Description("Customer request status of all payments of your order")]
-    public async Task<PaymentProcessingResult> RequestOrderPaymentStatusAsync(string orderId)
+    public async Task<PaymentProcessingResult> RequestOrderPaymentStatusAsync(int orderId)
     {
         try
         {

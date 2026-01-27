@@ -4,7 +4,7 @@ namespace Ciandt.Retail.MCP.Services;
 
 public class ReturnService
 {
-    public async Task<ReturnRequest> InitiateReturnAsync(string orderId, List<ReturnItem> items, string returnReason)
+    public async Task<ReturnRequest> InitiateReturnAsync(int orderId, List<ReturnItem> items, string returnReason)
     {
         throw new NotImplementedException();
     }

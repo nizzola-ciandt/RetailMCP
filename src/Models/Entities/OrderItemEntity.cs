@@ -12,11 +12,11 @@ public class OrderItemEntity
 
     [Required]
     [MaxLength(50)]
-    public string OrderId { get; set; } = string.Empty;
+    public int OrderId { get; set; }
 
     [Required]
     [MaxLength(50)]
-    public string ProductId { get; set; } = string.Empty;
+    public int ProductId { get; set; }
 
     [Required]
     [MaxLength(200)]
@@ -33,9 +33,9 @@ public class OrderItemEntity
     public decimal TotalPrice { get; set; }
 
     // Navigation properties
-    [ForeignKey(nameof(OrderId))]
+    [ForeignKey("Id")]
     public virtual OrderEntity Order { get; set; } = null!;
 
-    [ForeignKey(nameof(ProductId))]
+    [ForeignKey("Id")]
     public virtual ProductEntity? Product { get; set; }
 }

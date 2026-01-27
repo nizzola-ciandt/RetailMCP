@@ -15,7 +15,7 @@ public class CartItemEntity
 
     [Required]
     [MaxLength(50)]
-    public string ProductId { get; set; } = string.Empty;
+    public int ProductId { get; set; }
 
     [Required]
     [MaxLength(200)]
