@@ -179,6 +179,114 @@ public class CustomerRepository : ICustomerRepository
         }
     }
 
+    public async Task<CustomerProfile?> FindCustomerProfileAsync(CustomerFindRequest customerParams)
+    {
+        try
+        {
+            if (customerParams == null)
+            {
+                _logger.LogWarning("FindCustomerProfileAsync called with null parameters");
+                return null;
+            }
+
+            // Valida se pelo menos um parâmetro foi fornecido
+            if (string.IsNullOrWhiteSpace(customerParams.Name) &&
+                string.IsNullOrWhiteSpace(customerParams.Email) &&
+                string.IsNullOrWhiteSpace(customerParams.Phone) &&
+                string.IsNullOrWhiteSpace(customerParams.DocumentCPF))
+            {
+                _logger.LogWarning("FindCustomerProfileAsync called with no search parameters");
+                return null;
+            }
+
+            _logger.LogInformation("Finding customer with parameters: Name={Name}, Email={Email}, Phone={Phone}, CPF={CPF}",
+                customerParams.Name ?? "null",
+                customerParams.Email ?? "null",
+                customerParams.Phone ?? "null",
+                customerParams.DocumentCPF ?? "null");
+
+            // Inicia a query
+            IQueryable<CustomerEntity> query = _context.Customers
+                .Include(c => c.Addresses);
+
+            // Aplica filtros dinamicamente (busca exata com prioridade)
+            // 1. Busca por Email (mais específico - busca exata)
+            if (!string.IsNullOrWhiteSpace(customerParams.Email))
+            {
+                var normalizedEmail = customerParams.Email.Trim().ToLower();
+                query = query.Where(c => c.Email.ToLower() == normalizedEmail);
+            }
+
+            // 2. Busca por CPF (mais específico - busca exata)
+            if (!string.IsNullOrWhiteSpace(customerParams.DocumentCPF))
+            {
+                var normalizedCPF = NormalizeCPF(customerParams.DocumentCPF);
+                query = query.Where(c => c.DocumentCPF == normalizedCPF);
+            }
+
+            // 3. Busca por Phone (flexível - busca parcial com LIKE)
+            if (!string.IsNullOrWhiteSpace(customerParams.Phone))
+            {
+                var normalizedPhone = NormalizePhone(customerParams.Phone);
+
+                // Busca tanto por match exato quanto por "contém"
+                // Isso permite buscar "11984701979" e encontrar "5511984701979"
+                query = query.Where(c =>
+                    c.Phone == normalizedPhone ||                              // Match exato
+                    c.Phone.Contains(normalizedPhone) ||                       // Contém em qualquer posição
+                    EF.Functions.Like(c.Phone, $"%{normalizedPhone}") ||      // SQL LIKE para performance
+                    normalizedPhone.Contains(c.Phone)                          // Caso invertido (phone enviado é maior)
+                );
+
+                _logger.LogInformation($"Searching for phone: {normalizedPhone}");
+            }
+
+            // 4. Busca por Name (menos específico - busca parcial)
+            if (!string.IsNullOrWhiteSpace(customerParams.Name))
+            {
+                var normalizedName = customerParams.Name.Trim();
+                query = query.Where(c => EF.Functions.Like(c.Name, $"%{normalizedName}%"));
+            }
+
+            // Executa a query e pega o primeiro resultado
+            var customer = await query.FirstOrDefaultAsync();
+
+            if (customer == null)
+            {
+                _logger.LogInformation("No customer found with the provided parameters");
+                return null;
+            }
+
+            _logger.LogInformation($"Customer found: ID={customer.Id}, Name={customer.Name}, Email={customer.Email}, Phone={customer.Phone}");
+
+            // Mapeia para CustomerProfile
+            var profile = new CustomerProfile
+            {
+                Id = customer.Id,
+                Name = customer.Name,
+                Email = customer.Email,
+                Phone = customer.Phone,
+                Zip = customer.Zip,
+                DocumentCPF = customer.DocumentCPF,
+                Address = customer.Addresses.Select(a => new Address
+                {
+                    Street = a.Street,
+                    City = a.City,
+                    State = a.State,
+                    ZipCode = a.ZipCode,
+                    Default = a.IsDefault
+                }).ToList()
+            };
+
+            return profile;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error finding customer profile");
+            return null;
+        }
+    }
+
     public async Task<AddressCreatedResult> AddAddressAsync(CustomerAddressCreateRequest userData)
     {
         try
@@ -244,4 +352,39 @@ public class CustomerRepository : ICustomerRepository
             };
         }
     }
+    #region Private Helper Methods
+
+    /// <summary>
+    /// Normaliza CPF removendo caracteres especiais
+    /// </summary>
+    private string NormalizeCPF(string cpf)
+    {
+        if (string.IsNullOrWhiteSpace(cpf))
+            return string.Empty;
+
+        // Remove pontos, traços e espaços
+        return new string(cpf.Where(char.IsDigit).ToArray());
+    }
+
+    /// <summary>
+    /// Normaliza telefone removendo caracteres especiais
+    /// Exemplos: 
+    /// - "(11) 98470-1979" -> "11984701979"
+    /// - "+55 11 98470-1979" -> "5511984701979"
+    /// - "11 9 8470 1979" -> "11984701979"
+    /// </summary>
+    private string NormalizePhone(string phone)
+    {
+        if (string.IsNullOrWhiteSpace(phone))
+            return string.Empty;
+
+        // Remove todos os caracteres não numéricos
+        var normalized = new string(phone.Where(char.IsDigit).ToArray());
+
+        _logger.LogDebug($"Phone normalized: '{phone}' -> '{normalized}'");
+
+        return normalized;
+    }
+
+    #endregion
 }

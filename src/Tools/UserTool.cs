@@ -28,6 +28,14 @@ public class UserTool
         return await _customerService.GetCustomerProfileAsync(userId);
     }
 
+    [McpServerTool(Name = "account_finder", Title = "Customer needs to find if has your data searching by Name, phone, email or cpf document")]
+    [Description("Find if exists user using one field of your data.")]
+    public async Task<CustomerProfile> FindUserAsync(CustomerFindRequest customer)
+    {
+        _logger.LogInformation($"Retrieving account information for user {customer}");
+        return await _customerService.FindCustomerProfileAsync(customer);
+    }
+
     [McpServerTool(Name = "account_update", Title = "Customer needs to update your account data")]
     [Description("Update data from user account.")]
     public async Task<CustomerProfileUpdateResult> UpdateAccountInformationAsync(CustomerUpdateRequest userData)

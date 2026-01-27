@@ -21,8 +21,14 @@ public class CustomerEntity
     [MaxLength(20)]
     public string Phone { get; set; } = string.Empty;
 
+    [MaxLength(18)]
+    public string DocumentCPF { get; set; } = string.Empty;
+
     [MaxLength(20)]
     public string Zip { get; set; } = string.Empty;
+
+    [MaxLength(1)]
+    public string Gender { get; set; } = string.Empty;
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

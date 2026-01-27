@@ -11,4 +11,5 @@ public interface ICustomerRepository
     Task<CustomerProfileCreatedResult> CreateProfileAsync(CustomerCreateRequest request);
     Task<ICollection<Address>> ListAddressAsync(string userId);
     Task<AddressCreatedResult> AddAddressAsync(CustomerAddressCreateRequest userData);
+    Task<CustomerProfile?> FindCustomerProfileAsync(CustomerFindRequest customerParams);
 }

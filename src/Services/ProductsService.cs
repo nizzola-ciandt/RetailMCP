@@ -9,10 +9,12 @@ public class ProductsService : IProductsService
 {
     public readonly IProductRepository _productRepository;
     public readonly ILogger _logger;
-    public ProductsService(IProductRepository productRepository, ILogger<ProductsService> logger)
+    public readonly string _productImageUrl;
+    public ProductsService(IProductRepository productRepository, ILogger<ProductsService> logger, IConfiguration config)
     {
         _productRepository = productRepository;
         _logger = logger;
+        _productImageUrl = config.GetSection("ProductImageUrl").Value;
     }
     public async Task<ProductSearchResult> SearchProductsAsync(ProductSearchCriteria criteria, int page = 1, int limit = 10)
     {
@@ -22,7 +24,17 @@ public class ProductsService : IProductsService
         response.TotalPages = 1;
         response.TotalCount = response.Products.Count();
 
+        PrepareImageUrl(response.Products);
+
         return response;
+    }
+
+    private void PrepareImageUrl(ICollection<ProductSummary> products)
+    {
+        foreach (var prod in products)
+        {
+            prod.ImageUrl = _productImageUrl + prod.ImageUrl;
+        }
     }
 
     public async Task<ProductDetailResult> GetProductDetailsAsync(string productId)

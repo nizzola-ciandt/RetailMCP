@@ -4,6 +4,7 @@ using Ciandt.Retail.MCP.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ciandt.Retail.MCP.Migrations
 {
     [DbContext(typeof(RetailDbContext))]
-    partial class RetailDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260120173450_documentcpf")]
+    partial class documentcpf
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,7 +73,7 @@ namespace Ciandt.Retail.MCP.Migrations
                         {
                             Id = 1,
                             City = "New York",
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 17, 44, 170, DateTimeKind.Utc).AddTicks(2873),
+                            CreatedAt = new DateTime(2026, 1, 20, 17, 34, 49, 940, DateTimeKind.Utc).AddTicks(9627),
                             CustomerId = 1,
                             IsDefault = true,
                             State = "NY",
@@ -81,7 +84,7 @@ namespace Ciandt.Retail.MCP.Migrations
                         {
                             Id = 2,
                             City = "Los Angeles",
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 17, 44, 170, DateTimeKind.Utc).AddTicks(2875),
+                            CreatedAt = new DateTime(2026, 1, 20, 17, 34, 49, 940, DateTimeKind.Utc).AddTicks(9629),
                             CustomerId = 2,
                             IsDefault = true,
                             State = "CA",
@@ -92,7 +95,7 @@ namespace Ciandt.Retail.MCP.Migrations
                         {
                             Id = 3,
                             City = "Los Angeles",
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 17, 44, 170, DateTimeKind.Utc).AddTicks(2876),
+                            CreatedAt = new DateTime(2026, 1, 20, 17, 34, 49, 940, DateTimeKind.Utc).AddTicks(9630),
                             CustomerId = 2,
                             IsDefault = false,
                             State = "CA",
@@ -228,11 +231,6 @@ namespace Ciandt.Retail.MCP.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasMaxLength(1)
-                        .HasColumnType("nvarchar(1)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -262,10 +260,9 @@ namespace Ciandt.Retail.MCP.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 17, 44, 170, DateTimeKind.Utc).AddTicks(2845),
+                            CreatedAt = new DateTime(2026, 1, 20, 17, 34, 49, 940, DateTimeKind.Utc).AddTicks(9605),
                             DocumentCPF = "",
                             Email = "marcio.nizzola@ciandt.com",
-                            Gender = "",
                             Name = "Marcio Nizzola",
                             Phone = "5511984701979",
                             Zip = "13.328-283"
@@ -273,10 +270,9 @@ namespace Ciandt.Retail.MCP.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 17, 44, 170, DateTimeKind.Utc).AddTicks(2847),
+                            CreatedAt = new DateTime(2026, 1, 20, 17, 34, 49, 940, DateTimeKind.Utc).AddTicks(9606),
                             DocumentCPF = "",
                             Email = "ricardoso@ciandt.com",
-                            Gender = "",
                             Name = "Ricardo Odorczyk",
                             Phone = "5541999089809",
                             Zip = "67890"
@@ -511,7 +507,7 @@ namespace Ciandt.Retail.MCP.Migrations
                             AverageRating = 4.7000000000000002,
                             Brand = "TechConnect",
                             Category = "Roteadores",
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 17, 44, 170, DateTimeKind.Utc).AddTicks(2674),
+                            CreatedAt = new DateTime(2026, 1, 20, 17, 34, 49, 940, DateTimeKind.Utc).AddTicks(9440),
                             DiscountedPrice = 249.99m,
                             HasPromotion = true,
                             ImageUrl = "https://example.com/images/router-netspeed-500.jpg",
@@ -530,7 +526,7 @@ namespace Ciandt.Retail.MCP.Migrations
                             AverageRating = 4.9000000000000004,
                             Brand = "NetMaster",
                             Category = "Roteadores",
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 17, 44, 170, DateTimeKind.Utc).AddTicks(2676),
+                            CreatedAt = new DateTime(2026, 1, 20, 17, 34, 49, 940, DateTimeKind.Utc).AddTicks(9443),
                             HasPromotion = false,
                             ImageUrl = "https://example.com/images/router-ultraconnect-wifi6.jpg",
                             InStock = true,
@@ -547,7 +543,7 @@ namespace Ciandt.Retail.MCP.Migrations
                             AverageRating = 4.2999999999999998,
                             Brand = "PrintMaster",
                             Category = "Impressoras",
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 17, 44, 170, DateTimeKind.Utc).AddTicks(2679),
+                            CreatedAt = new DateTime(2026, 1, 20, 17, 34, 49, 940, DateTimeKind.Utc).AddTicks(9446),
                             DiscountedPrice = 799.99m,
                             HasPromotion = true,
                             ImageUrl = "https://example.com/images/printer-colorjet-pro.jpg",
@@ -566,7 +562,7 @@ namespace Ciandt.Retail.MCP.Migrations
                             AverageRating = 4.7999999999999998,
                             Brand = "TechPro",
                             Category = "Notebooks",
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 17, 44, 170, DateTimeKind.Utc).AddTicks(2682),
+                            CreatedAt = new DateTime(2026, 1, 20, 17, 34, 49, 940, DateTimeKind.Utc).AddTicks(9449),
                             DiscountedPrice = 4299.99m,
                             HasPromotion = true,
                             ImageUrl = "https://example.com/images/notebook-ultrabook-x5.jpg",
@@ -586,7 +582,7 @@ namespace Ciandt.Retail.MCP.Migrations
                             AverageRating = 4.5,
                             Brand = "GalaxyTech",
                             Category = "Tablets",
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 17, 44, 170, DateTimeKind.Utc).AddTicks(2685),
+                            CreatedAt = new DateTime(2026, 1, 20, 17, 34, 49, 940, DateTimeKind.Utc).AddTicks(9451),
                             HasPromotion = false,
                             ImageUrl = "https://example.com/images/tablet-tabx-pro.jpg",
                             InStock = false,

@@ -1,7 +1,11 @@
 using Ciandt.Retail.MCP;
 using Ciandt.Retail.MCP.Data;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddDependencyInjection();
+builder.Logging.AddConsole(o => o.LogToStandardErrorThreshold = LogLevel.Information);
 
 // Add service defaults (Database, DI, Logging, MCP Server)
 builder.AddServiceDefaults();
@@ -13,6 +17,7 @@ builder.Services
     .WithHttpTransport(o => o.Stateless = true)           // Use HTTP transport for the MCP server
     .WithToolsFromAssembly();      // Automatically discoer and register MCP tools from this assembly
 
+builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options => options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 // Add HTTP Client for external services
 builder.Services.AddHttpClient();
@@ -34,8 +39,6 @@ app.MapDefaultEndpoints();
 
 // Map root route
 app.MapGet("/", () => "Welcome to RetailMCP with Entity Framework Core!");
-
-app.MapMcp("/mcp");
 
 app.Run();
 
